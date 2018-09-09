@@ -10,7 +10,9 @@ This is babycam_pi project is a Fork from the https://github.com/silvanmelchior/
 
 Please support the orignal RPi Cam Web Interface project.
 
-This project adds DHT11 sensor reading for temperature and humidity and RPi Cam IR light switch.
+# Babycam Pi
+
+This project adds DHT11 sensor and RPi Cam IR light switch, modified the UI to display the readings and switch.
 
 DHT11 sensor
 Display the temperature and humidity in order to track the surrounding environment for baby.
