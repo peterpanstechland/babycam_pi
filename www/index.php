@@ -26,7 +26,7 @@
    $options_mf = array('Off' => '0', 'On' => '1');
    $options_cn = array('First' => '1', 'Second' => '2');
    $options_st = array('Off' => '0', 'On' => '1');
-   
+
    function initCamPos() {
       $tr = fopen("pipan_bak.txt", "r");
       if($tr){
@@ -82,7 +82,7 @@
          echo "</div>";
       }
    }
-  
+
    function pilight_controls() {
       echo "<tr>";
         echo "<td>Pi-Light:</td>";
@@ -103,16 +103,16 @@
          }
       }
    }
-   
-  
+
+
    function makeOptions($options, $selKey) {
       global $config;
       switch ($selKey) {
-         case 'flip': 
+         case 'flip':
             $cvalue = (($config['vflip'] == 'true') || ($config['vflip'] == 1) ? 2:0);
             $cvalue += (($config['hflip'] == 'true') || ($config['hflip'] == 1) ? 1:0);
             break;
-         case 'MP4Box': 
+         case 'MP4Box':
             $cvalue = $config[$selKey];
             if ($cvalue == 'background') $cvalue = 2;
             break;
@@ -134,7 +134,7 @@
       global $config, $debugString;
       if ($selKey == '') $selKey = $id;
       switch ($selKey) {
-         case 'tl_interval': 
+         case 'tl_interval':
             if (array_key_exists($selKey, $config)) {
                $value = $config[$selKey] / 10;
             } else {
@@ -152,7 +152,7 @@
       }
       echo "<input type='text' size=$size id='$id' value='$value'>";
    }
-   
+
    function macroUpdates() {
       global $config, $debugString, $macros;
 	  $m = 0;
@@ -180,7 +180,7 @@
       else
          return '';
    }
-   
+
    function getLoadClass() {
       global $config;
       if(array_key_exists('fullscreen', $config) && $config['fullscreen'] == 1)
@@ -244,7 +244,7 @@
          $Simple = 0;
 	  }
    }
-  
+
    $streamButton = "MJPEG-Stream";
    $mjpegmode = 0;
    if(isset($_COOKIE["stream_mode"])) {
@@ -259,7 +259,7 @@
    $divider = $config['divider'];
    $serverSoftware = $_SERVER['SERVER_SOFTWARE'];
    if(stripos($serverSoftware, 'apache') !== false) {
-	   $user = apache_getenv("REMOTE_USER"); 
+	   $user = apache_getenv("REMOTE_USER");
    } else if(stripos($serverSoftware, 'nginx') !== false) {
 	   try {
 		   $user = $remote_user;
@@ -289,7 +289,7 @@
         });
 
         function refreshdata(){
-          $('#temp').load('temp.php', function(){
+          $('#temp').load('temperature.php', function(){
             setTimeout(refreshdata, 120000);
           });
         }
@@ -342,7 +342,7 @@
          <?php  if($config['motion_external'] == '1'): ?><a href="motion.php" class="btn btn-default" <?php getdisplayStyle('settings', $userLevel); ?>>Edit motion settings</a>&nbsp;&nbsp;<?php endif; ?>
          <a href="schedule.php" class="btn btn-default" <?php getdisplayStyle('settings', $userLevel); ?>>Edit schedule settings</a>
       </div>
-    
+
       <div class="container-fluid text-center">
          <div class="panel-group" id="accordion" <?php getdisplayStyle('settings', $userLevel); ?> >
             <div class="panel panel-default">
@@ -373,7 +373,7 @@
                               <input type="button" value="OK" onclick="set_res();">
                            </td>
                         </tr>
-                        <?php  if($config['camera_num'] > 0): ?> 
+                        <?php  if($config['camera_num'] > 0): ?>
                         <tr>
                            <td>Camera select (Compute module only)</td>
                            <td>
