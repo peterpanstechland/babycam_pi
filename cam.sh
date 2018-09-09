@@ -67,7 +67,7 @@ mv "$3.bak" "$3"
 
 do_finish() {
   if [ $ASK_TO_REBOOT -eq 1 ]; then
-    dialog --yesno "Would you like to reboot now?" 5 35
+    dialog --ascii-lines --yesno "Would you like to reboot now?" 5 35
     if [ $? -eq 0 ]; then # yes
       sync
       reboot
@@ -81,10 +81,11 @@ do_finish() {
 do_camera ()
 {
   if [ ! -e /boot/start_x.elf ]; then
-    dialog --msgbox "Your firmware appears to be out of date (no start_x.elf). Please update" 20 60
+    dialog --ascii-lines --msgbox "Your firmware appears to be out of date (no start_x.elf). Please update" 20 60
 	exec sudo $MAINSCRIPT
   fi
-  dialog --title "Raspberry Pi camera message" \
+  dialog --ascii-lines                   \
+  --title "Raspberry Pi camera message" \
   --backtitle "$backtitle"                     \
   --extra-button --extra-label Disable         \
   --ok-label Enable                            \

@@ -29,7 +29,7 @@
 # Edited by jfarcher to work with github
 # Edited by slabua to support custom installation folder
 # Additions by btidey, miraaz, gigpi
-# Rewritten and split up by Bob Tidey 
+# Rewritten and split up by Bob Tidey
 
 #Debug enable next 3 lines
 exec 5> install.txt
@@ -80,7 +80,8 @@ fi
 rm exitfile.txt >/dev/null 2>&1
 if [ $# -eq 0 ] || [ "$1" != "q" ]; then
    exec 3>&1
-   dialog                                         \
+   dialog                                          \
+   --ascii-lines                                   \
    --separate-widget $'\n'                        \
    --title "Configuration Options"    \
    --backtitle "$backtitle"					   \
@@ -144,12 +145,12 @@ fn_stop ()
 
 fn_reboot ()
 { # This is function reboot system
-  dialog --title "Start camera system now" --backtitle "$backtitle" --yesno "Start now?" 5 33
+  dialog --ascii-lines --title "Start camera system now" --backtitle "$backtitle" --yesno "Start now?" 5 33
   response=$?
     case $response in
       0) ./start.sh;;
-      1) dialog --title 'Start or Reboot message' --colors --infobox "\Zb\Z1"'Manually run ./start.sh or reboot!' 4 28 ; sleep 2;;
-      255) dialog --title 'Start or Reboot message' --colors --infobox "\Zb\Z1"'Manually run ./start.sh or reboot!' 4 28 ; sleep 2;;
+      1) dialog --ascii-lines --title 'Start or Reboot message' --colors --infobox "\Zb\Z1"'Manually run ./start.sh or reboot!' 4 28 ; sleep 2;;
+      255) dialog --ascii-lines --title 'Start or Reboot message' --colors --infobox "\Zb\Z1"'Manually run ./start.sh or reboot!' 4 28 ; sleep 2;;
     esac
 }
 
@@ -203,7 +204,7 @@ if [ -e "\/$aconf" ]; then
    sudo rm "\/$aconf"
 fi
 #uncomment next line if wishing to always access by http://ip as the root
-#sudo sed -i "s:root /var/www;:root /var/www$rpicamdirEsc;:g" $aconf 
+#sudo sed -i "s:root /var/www;:root /var/www$rpicamdirEsc;:g" $aconf
 sudo mv /etc/nginx/sites-available/*default* etc/nginx/sites-available/ >/dev/null 2>&1
 
 if [ "$user" == "" ]; then
@@ -249,33 +250,33 @@ fn_lighttpd ()
 sudo lighty-enable-mod fastcgi-php
 sudo sed -i "s/^server.document-root.*/server.document-root  = \"\/var\/www$rpicamdirEsc\"/g" /etc/lighttpd/lighttpd.conf
 sudo sed -i "s/^server.port.*/server.port  = $webport/g" /etc/lighttpd/lighttpd.conf
-#sudo service lighttpd restart  
+#sudo service lighttpd restart
 sudo /etc/init.d/lighttpd force-reload
  }
 
 fn_motion ()
 {
-sudo sed -i "s/^daemon.*/daemon on/g" /etc/motion/motion.conf		
-sudo sed -i "s/^logfile.*/;logfile \/tmp\/motion.log /g" /etc/motion/motion.conf		
-sudo sed -i "s/^; netcam_url.*/netcam_url/g" /etc/motion/motion.conf		
-sudo sed -i "s/^netcam_url.*/netcam_url http:\/\/localhost:$webport$rpicamdirEsc\/cam_pic.php/g" /etc/motion/motion.conf		
+sudo sed -i "s/^daemon.*/daemon on/g" /etc/motion/motion.conf
+sudo sed -i "s/^logfile.*/;logfile \/tmp\/motion.log /g" /etc/motion/motion.conf
+sudo sed -i "s/^; netcam_url.*/netcam_url/g" /etc/motion/motion.conf
+sudo sed -i "s/^netcam_url.*/netcam_url http:\/\/localhost:$webport$rpicamdirEsc\/cam_pic.php/g" /etc/motion/motion.conf
 if [ "$user" == "" ]; then
-   sudo sed -i "s/^netcam_userpass.*/; netcam_userpass value/g" /etc/motion/motion.conf		
+   sudo sed -i "s/^netcam_userpass.*/; netcam_userpass value/g" /etc/motion/motion.conf
 else
-   sudo sed -i "s/^; netcam_userpass.*/netcam_userpass/g" /etc/motion/motion.conf		
-   sudo sed -i "s/^netcam_userpass.*/netcam_userpass $user:$webpasswd/g" /etc/motion/motion.conf		
+   sudo sed -i "s/^; netcam_userpass.*/netcam_userpass/g" /etc/motion/motion.conf
+   sudo sed -i "s/^netcam_userpass.*/netcam_userpass $user:$webpasswd/g" /etc/motion/motion.conf
 fi
-sudo sed -i "s/^; on_event_start.*/on_event_start/g" /etc/motion/motion.conf		
-sudo sed -i "s/^on_event_start.*/on_event_start echo -n \'1\' >\/var\/www$rpicamdirEsc\/FIFO1/g" /etc/motion/motion.conf		
-sudo sed -i "s/^; on_event_end.*/on_event_end/g" /etc/motion/motion.conf		
-sudo sed -i "s/^on_event_end.*/on_event_end echo -n \'0\' >\/var\/www$rpicamdirEsc\/FIFO1/g" /etc/motion/motion.conf		
-sudo sed -i "s/control_port.*/control_port 6642/g" /etc/motion/motion.conf		
-sudo sed -i "s/control_html_output.*/control_html_output off/g" /etc/motion/motion.conf		
-sudo sed -i "s/^output_pictures.*/output_pictures off/g" /etc/motion/motion.conf		
-sudo sed -i "s/^ffmpeg_output_movies on/ffmpeg_output_movies off/g" /etc/motion/motion.conf		
-sudo sed -i "s/^ffmpeg_cap_new on/ffmpeg_cap_new off/g" /etc/motion/motion.conf		
-sudo sed -i "s/^stream_port.*/stream_port 0/g" /etc/motion/motion.conf		
-sudo sed -i "s/^webcam_port.*/webcam_port 0/g" /etc/motion/motion.conf		
+sudo sed -i "s/^; on_event_start.*/on_event_start/g" /etc/motion/motion.conf
+sudo sed -i "s/^on_event_start.*/on_event_start echo -n \'1\' >\/var\/www$rpicamdirEsc\/FIFO1/g" /etc/motion/motion.conf
+sudo sed -i "s/^; on_event_end.*/on_event_end/g" /etc/motion/motion.conf
+sudo sed -i "s/^on_event_end.*/on_event_end echo -n \'0\' >\/var\/www$rpicamdirEsc\/FIFO1/g" /etc/motion/motion.conf
+sudo sed -i "s/control_port.*/control_port 6642/g" /etc/motion/motion.conf
+sudo sed -i "s/control_html_output.*/control_html_output off/g" /etc/motion/motion.conf
+sudo sed -i "s/^output_pictures.*/output_pictures off/g" /etc/motion/motion.conf
+sudo sed -i "s/^ffmpeg_output_movies on/ffmpeg_output_movies off/g" /etc/motion/motion.conf
+sudo sed -i "s/^ffmpeg_cap_new on/ffmpeg_cap_new off/g" /etc/motion/motion.conf
+sudo sed -i "s/^stream_port.*/stream_port 0/g" /etc/motion/motion.conf
+sudo sed -i "s/^webcam_port.*/webcam_port 0/g" /etc/motion/motion.conf
 sudo sed -i "s/^process_id_file/; process_id_file/g" /etc/motion/motion.conf
 sudo sed -i "s/^videodevice/; videodevice/g" /etc/motion/motion.conf
 sudo sed -i "s/^event_gap 60/event_gap 3/g" /etc/motion/motion.conf

@@ -29,7 +29,7 @@
 # Edited by jfarcher to work with github
 # Edited by slabua to support custom installation folder
 # Additions by btidey, miraaz, gigpi
-# Split up and refactored by Bob Tidey 
+# Split up and refactored by Bob Tidey
 
 #Debug enable next 3 lines
 exec 5> remove.txt
@@ -54,7 +54,7 @@ fn_stop ()
         sudo service apache2 stop >dev/null 2>&1
         sudo service nginx stop >dev/null 2>&1
         sudo service lighttpd stop >dev/null 2>&1
-        dialog --title 'Stop message' --infobox 'Stopped.' 4 16 ; sleep 2
+        dialog --ascii-lines --title 'Stop message' --infobox 'Stopped.' 4 16 ; sleep 2
 }
 
 fn_autostart_disable ()
@@ -63,7 +63,7 @@ fn_autostart_disable ()
   sudo sed '/#START/,/#END/d' /etc/rc.local > "$tmpfile" && sudo mv "$tmpfile" /etc/rc.local
   # Remove to growing plank lines.
   sudo awk '!NF {if (++n <= 1) print; next}; {n=0;print}' /etc/rc.local > "$tmpfile" && sudo mv "$tmpfile" /etc/rc.local
-			  
+
   # Finally we set owners and permissions all files what we changed.
   sudo chown root:root /etc/rc.local
   sudo chmod 755 /etc/rc.local
@@ -94,13 +94,13 @@ sudo service apache2 restart
 
 
 fn_stop
-     
-dialog --title "Uninstall packages!" --backtitle "$backtitle" --yesno "Do You want uninstall webserver and php packages also?" 6 35
+
+dialog --ascii-lines --title "Uninstall packages!" --backtitle "$backtitle" --yesno "Do You want uninstall webserver and php packages also?" 6 35
 response=$?
 case $response in
-   0) package=('apache2' 'php5' 'libapache2-mod-php5' 'php5-cli' 'zip' 'nginx' 'lighttpd ''apache2-utils' 'php5-fpm' 'php5-common' 'php-apc' 'gpac motion' 'libav-tools');; 
-   1) package=('zip' 'gpac motion' 'libav-tools');; 
-   255) dialog --title 'Uninstall message' --infobox 'Webserver and php packages not uninstalled.' 4 33 ; sleep 2;;
+   0) package=('apache2' 'php5' 'libapache2-mod-php5' 'php5-cli' 'zip' 'nginx' 'lighttpd ''apache2-utils' 'php5-fpm' 'php5-common' 'php-apc' 'gpac motion' 'libav-tools');;
+   1) package=('zip' 'gpac motion' 'libav-tools');;
+   255) dialog --ascii-lines --title 'Uninstall message' --infobox 'Webserver and php packages not uninstalled.' 4 33 ; sleep 2;;
 esac
 for i in "${package[@]}"
    do
@@ -108,7 +108,7 @@ for i in "${package[@]}"
       sudo apt-get remove -y "$i"
       fi
    done
-sudo apt-get autoremove -y	  
+sudo apt-get autoremove -y
 
 if [ ! -d ~/media ]; then
   mkdir ~/media
@@ -127,8 +127,7 @@ fn_autostart_disable
 
 sudo mv etc/nginx/sites-available/*default* /etc/nginx/sites-available >/dev/null 2>&1
 sudo mv etc/apache2/sites-available/*default* /etc/apache2/sites-available >/dev/null 2>&1
-     
+
 if [ $(dpkg-query -W -f='${Status}' "apache2" 2>/dev/null | grep -c "ok installed") -eq 1 ]; then
    fn_apache_default
 fi
-
